@@ -1,74 +1,54 @@
-/* Navbar Styles */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f8f9fa; /* Light gray background */
-    border-bottom: 2px solid #e0e0e0; /* Subtle bottom border */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    font-family: 'Arial', sans-serif;
-  }
-  
-  /* Logo Styling */
-  .navbar-logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #007bff; /* Primary blue */
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-logo:hover {
-    color: #0056b3; /* Darker blue on hover */
-  }
-  
-  /* Cart Icon Styling */
-  .navbar-cart a {
-    text-decoration: none;
-    color: #333; /* Neutral dark gray */
-    font-size: 24px;
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-cart a:hover {
-    color: #007bff; /* Primary blue on hover */
-  }
-  
-  /* Badge for Cart Items (Optional) */
-  .navbar-cart a::after {
-    content: attr(data-count); /* Dynamic cart count */
-    display: none; /* Hide by default */
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: #dc3545; /* Red badge for notifications */
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
-  }
-  
-  /* Show badge if count exists (example: "data-count") */
-  .navbar-cart a[data-count]:not([data-count="0"])::after {
-    display: inline-block;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .navbar-logo {
-      margin-bottom: 10px;
-    }
-  
-    .navbar-cart {
-      align-self: flex-end;
-    }
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-options {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-cart,
+.navbar-orders {
+  position: relative;
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.navbar-cart i,
+.navbar-orders i {
+  margin-right: 5px;
+}
+
+.navbar-cart::after {
+  content: attr(data-count);
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.navbar-orders:hover,
+.navbar-cart:hover {
+  text-decoration: underline;
+}

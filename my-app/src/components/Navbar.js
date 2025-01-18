@@ -9,9 +9,12 @@ const Navbar = () => {
       <Link to="/">
         <div className="navbar-logo">Shopping UI</div>
       </Link>
-      <div className="navbar-cart">
-        <Link to="/cart" data-count="3">
-          <i className="fas fa-shopping-cart"></i>
+      <div className="navbar-options">
+        <Link to="/orders" className="navbar-orders">
+          <i className="fas fa-box"></i> Orders
+        </Link>
+        <Link to="/cart" className="navbar-cart" data-count="3">
+          <i className="fas fa-shopping-cart"></i> Cart
         </Link>
       </div>
     </nav>

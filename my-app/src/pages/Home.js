@@ -6,7 +6,7 @@ import IphoneSales from '../components/DIsplay'
 export default function Home() {
   return (
     <>
-    <Navbar></Navbar>
+  
 <IphoneSales></IphoneSales>   
     <SupportChat></SupportChat>
     </>
