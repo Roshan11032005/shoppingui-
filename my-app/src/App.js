@@ -12,7 +12,7 @@ function App() {
     <DndProvider backend={HTML5Backend}>
       <CartProvider>
         <OrdersProvider>
-          <div style={styles.container}>
+          <div style={styles.appContainer}>
             {/* Home Section - Span both top blocks */}
             <div style={{ ...styles.section, ...styles.homeSection }}>
               <h2>Home</h2>
@@ -20,13 +20,13 @@ function App() {
             </div>
             
             {/* Cart Section */}
-            <div style={styles.section}>
+            <div style={{ ...styles.section, ...styles.cartSection }}>
               <h2>Cart</h2>
               <Cart />
             </div>
             
             {/* Orders Section */}
-            <div style={styles.section}>
+            <div style={{ ...styles.section, ...styles.orderSection }}>
               <h2>Orders</h2>
               <Order />
             </div>
@@ -38,7 +38,7 @@ function App() {
 }
 
 const styles = {
-  container: {
+  appContainer: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr", // Two columns
     gridTemplateRows: "1fr 1fr",    // Two rows
@@ -48,15 +48,21 @@ const styles = {
     boxSizing: "border-box",
   },
   section: {
-    border: "1px solid #ccc",
-    borderRadius: "8px",
     padding: "20px",
     overflow: "auto",
     textAlign: "center",
+    borderRadius: "8px",
   },
   homeSection: {
-    gridColumn: "1 / span 2",  // Spans across both columns
-    gridRow: "1",              // Stays in the first row
+    gridColumn: "1 / span 2", // Spans across both columns
+    gridRow: "1",             // Stays in the first row
+    border: "2px solid blue", // Border color for Home section
+  },
+  cartSection: {
+    border: "2px solid green", // Border color for Cart section
+  },
+  orderSection: {
+    border: "2px solid red",   // Border color for Order section
   },
 };
 
