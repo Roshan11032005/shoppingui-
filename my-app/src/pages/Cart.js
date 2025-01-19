@@ -51,7 +51,7 @@ const Cart = () => {
                 <div style={{ flex: 1 }}>
                   <h3 style={{ fontSize: "20px", margin: "0 0 10px" }}>{product.name}</h3>
                   <p style={{ fontSize: "16px", margin: "0 0 5px" }}>Price: ${product.price}</p>
-                  <p style={{ fontSize: "16px", margin: "0 0 10px" }}>Quantity: {product.quantity}</p>
+                 
                   <button
                     onClick={() => removeFromCart(product.id)}
                     style={{

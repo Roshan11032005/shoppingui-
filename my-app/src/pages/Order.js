@@ -59,16 +59,7 @@ const Order = () => {
     <div style={styles.container}>
       <h1 style={styles.heading}>Order Summary</h1>
 
-      {/* Information text field explaining how to use the software */}
-      <div style={styles.infoText}>
-        <strong>How to Use:</strong>
-        <ul>
-          <li>Click on the "Order #ID" to expand and view the items in the order.</li>
-          <li>Each expanded order will show the list of items with their name and quantity.</li>
-          <li>Click the order title again to collapse the order and hide the items.</li>
-          <li>If no orders are placed yet, a message will appear indicating "No orders placed yet".</li>
-        </ul>
-      </div>
+      
 
       {/* Check if there are any orders */}
       {orders.length === 0 ? (
@@ -91,7 +82,7 @@ const Order = () => {
                 {/* Loop through the items in the order */}
                 {order.items.map((item) => (
                   <li key={item.id} style={styles.listItem}>
-                    {item.name} - Quantity: {item.quantity} {/* Display item name and quantity */}
+                    {item.name}
                   </li>
                 ))}
               </ul>

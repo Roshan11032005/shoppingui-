@@ -5,8 +5,8 @@ import { useDrag, useDrop } from "react-dnd"; // Import necessary hooks from rea
 
 const ItemType = "ITEM"; // Define a constant for the item type
 
-const DraggableItem = ({ product, quantity, handleQuantityChange, handleAddToCart }) => {
-  // Drag and drop functionality for each product
+const DraggableItem = ({ product, handleAddToCart }) => {
+  // Drag functionality for each product
   const [{ isDragging }, drag] = useDrag({
     type: ItemType,
     item: product,
@@ -15,39 +15,19 @@ const DraggableItem = ({ product, quantity, handleQuantityChange, handleAddToCar
     }),
   });
 
-  const [{ isOver }, drop] = useDrop({
-    accept: ItemType,
-    drop: () => handleAddToCart(product), // Add product to cart when dropped
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  });
-
   return (
     <div
-      ref={drop}
+      ref={drag}
       style={{
         ...styles.card,
         opacity: isDragging ? 0.5 : 1,
-        border: isOver ? "2px dashed #007bff" : "1px solid #ccc",
       }}
     >
-      <div ref={drag} style={styles.cardContent}>
-        <img
-          src={product.image}
-          alt={product.name}
-          style={styles.image}
-        />
+      <div style={styles.cardContent}>
+        <img src={product.image} alt={product.name} style={styles.image} />
         <h3>{product.name}</h3>
         <p>Price: ${product.price}</p>
         <p>Quantity Available: {product.quantity}</p>
-        <input
-          type="number"
-          value={quantity}
-          onChange={handleQuantityChange}
-          min="1"
-          style={styles.quantityInput}
-        />
         <button
           onClick={() => handleAddToCart(product)}
           style={styles.addButton}
@@ -60,108 +40,144 @@ const DraggableItem = ({ product, quantity, handleQuantityChange, handleAddToCar
 };
 
 const IphoneSales = () => {
-  const [quantity, setQuantity] = useState(1); // Default quantity set to 1
-  const { addToCart } = useCart(); // Access the addToCart function
+  const { addToCart, cart } = useCart(); // Access the addToCart function and cart state
 
   const handleAddToCart = (product) => {
-    addToCart(product, quantity); // Add the product with the selected quantity
-    alert(`${product.name} (Quantity: ${quantity}) added to cart!`);
+    addToCart(product); // Add the product to the cart
+    alert(`${product.name} added to cart!`);
   };
 
-  const handleQuantityChange = (event) => {
-    setQuantity(Number(event.target.value));
-  };
+  // Drop functionality for the cart
+  const [{ isOver }, drop] = useDrop({
+    accept: ItemType,
+    drop: (item) => handleAddToCart(item),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
 
   return (
-    <div>
-      {/* Instructions for the drag-and-drop feature */}
-      <div style={styles.instructions}>
-        <h2>How to Use:</h2>
-        <p>1. Drag a product card to the cart drop area to add it.</p>
-        <p>2. Adjust the quantity before adding the product to the cart.</p>
-        <p>3. Alternatively, click the "Add to Cart" button to add the product directly.</p>
-        <p>
-          4. While dragging, the product card will appear semi-transparent, and the cart
-          area will highlight.
-        </p>
+    <div style={styles.pageContainer}>
+      {/* Products Section */}
+      <div style={styles.productsSection}>
+        <h2>Products</h2>
+        <div style={styles.container}>
+          {iphoneSalesData.map((product) => (
+            <DraggableItem
+              key={product.id}
+              product={product}
+              handleAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Render product cards */}
-      <div style={styles.container}>
-        {iphoneSalesData.map((product) => (
-          <DraggableItem
-            key={product.id}
-            product={product}
-            quantity={quantity}
-            handleQuantityChange={handleQuantityChange}
-            handleAddToCart={handleAddToCart}
-          />
-        ))}
+      {/* Cart Section */}
+      <div
+        ref={drop}
+        style={{
+          ...styles.cartSection,
+          border: isOver ? "2px dashed #007bff" : "1px solid #ccc",
+          backgroundColor: isOver ? "#f0f8ff" : "#f9f9f9",
+        }}
+      >
+        <h2>Your Cart</h2>
+        {cart.length === 0 ? (
+          <p>Drag items here to add to your cart.</p>
+        ) : (
+          cart.map((item, index) => (
+            <div key={index} style={styles.cartItem}>
+              <p>{item.name}</p>
+             
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 };
-
 const styles = {
-  instructions: {
-    textAlign: "center",
-    marginBottom: "20px",
-    padding: "15px",
+  pageContainer: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gridTemplateRows: "1fr 1fr",
+    gap: "10px",
+    height: "100vh",
+    padding: "10px",
+    boxSizing: "border-box",
+  },
+  section: {
     border: "1px solid #ccc",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
-    fontSize: "16px",
-    lineHeight: "1.5",
-    color: "#333",
+    borderRadius: "6px",
+    padding: "10px",
+    overflow: "auto",
+    textAlign: "center",
+  },
+  productsSection: {
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    padding: "10px",
+    textAlign: "center",
+    fontSize: "12px", // Smaller font size for section
+  },
+  cartSection: {
+    border: "1px solid #ccc",
+    borderRadius: "6px",
+    padding: "10px",
+    textAlign: "center",
+    fontSize: "12px", // Smaller font size for cart
+    overflow: "auto",
   },
   container: {
     display: "flex",
-    justifyContent: "space-around",
-    padding: "20px",
-    gap: "20px",
     flexWrap: "wrap",
+    gap: "5px", // Smaller gap between items
+    justifyContent: "center",
   },
   card: {
     border: "1px solid #ccc",
-    borderRadius: "8px",
-    padding: "15px",
+    borderRadius: "4px",
+    padding: "8px",
     textAlign: "center",
-    width: "200px",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-    transition: "transform 0.3s",
+    width: "100px", // Reduced width
+    fontSize: "10px", // Smaller font size
   },
   cardContent: {
     cursor: "move",
   },
   image: {
-    width: "100%",
+    width: "80px", // Reduced width
     height: "auto",
-    borderRadius: "8px",
+    borderRadius: "4px",
+  },
+  cartItem: {
+    margin: "5px 0",
+    padding: "5px",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+    fontSize: "10px", // Smaller font size
+    backgroundColor: "#f9f9f9",
   },
   addButton: {
-    marginTop: "10px",
-    padding: "10px",
+    marginTop: "5px",
+    padding: "5px",
     backgroundColor: "#007bff",
     color: "white",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "4px",
+    fontSize: "10px", // Smaller font size
     cursor: "pointer",
-    fontWeight: "bold",
-    fontSize: "14px",
-    transition: "background-color 0.3s, transform 0.2s",
-  },
-  addButtonHover: {
-    backgroundColor: "#0056b3",
-    transform: "scale(1.05)",
   },
   quantityInput: {
-    marginTop: "10px",
-    padding: "5px",
-    width: "60px",
+    width: "50px", // Smaller input width
+    padding: "3px",
+    fontSize: "10px", // Smaller font size
     textAlign: "center",
     borderRadius: "4px",
     border: "1px solid #ccc",
+    marginTop: "5px",
   },
 };
+
 
 export default IphoneSales;
